@@ -1,0 +1,41 @@
+<div class="page" id="page-1">
+  
+ 
+<div class="content_box">
+  
+
+
+<h1>Lista de prospectos</h1>
+
+<table>
+  <tr>
+    <th>Nombre</th>
+    <th>Email</th>
+    <th>Edad</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @prospectos.each do |prospecto| %>
+  <tr>
+    <td><%= prospecto.nombre %></td>
+    <td><%= prospecto.email %></td>
+    <td><%= prospecto.edad %></td>
+    <td><%= link_to 'Mostrar', prospecto %></td>
+    <td><%= link_to 'Editar', edit_prospecto_path(prospecto) %></td>
+    <td><%= link_to 'Borrar', prospecto, confirm: 'Esta seguro?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nuevo Prospecto', new_prospecto_path %>
+
+
+  
+</div>
+  
+  
+</div>

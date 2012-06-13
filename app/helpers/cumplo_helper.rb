@@ -1,0 +1,2 @@
+module CumploHelper
+end

@@ -1,0 +1,29 @@
+<div class="page" id="page-1">
+  
+ 
+<div class="content_box">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nombre:</b>
+  <%= @prospecto.nombre %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @prospecto.email %>
+</p>
+
+<p>
+  <b>Edad:</b>
+  <%= @prospecto.edad %>
+</p>
+
+
+<%= link_to 'Editar', edit_prospecto_path(@prospecto) %> |
+<%= link_to 'Volver', prospectos_path %>
+
+</div>
+  
+</div>

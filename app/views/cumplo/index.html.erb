@@ -1,0 +1,298 @@
+<script type="text/javascript">
+  
+  
+    
+  jQuery(document).ready(function() {
+    
+    //Tenemos que abrir el canal del socket ahora
+   
+    var CumploSocket = new Socketjs('<%=@socket_url%>?canal_id=<%=@socketid%>');
+    
+    CumploSocket.bind( 'open', function (data) {
+      console.log("se ha abierto un canal "+data);
+    });
+    
+    CumploSocket.bind( 'nombre', function (data) {
+      
+      jQuery("#prospecto_nombre").val(data.mensaje);
+      jQuery(".page").slideUp();
+      jQuery(".contacto").show("slow");
+      
+    });
+    
+    CumploSocket.bind( 'accion', function (data) {
+       console.log("se ha enviado un mensaje "+data);
+       procesar_mensaje(data)
+    });
+    
+   
+    
+    CumploSocket.bind( 'close', function (data) {
+       console.log("se ha cerrado un canal "+data);
+    });
+    
+    CumploSocket.bind( 'silencio', function (data) {
+       console.log(data);
+    });
+    
+     
+    CumploSocket.bind( 'page', function (data) {
+      
+       console.log(data);
+    });
+    
+    
+    //Generamos el codigo qr que envia el id del canal a la aplicación mobile para que el usuario pueda unirse.
+    jQuery('#qr').qrcode("<%=@app_url%>/cliente/<%=@socketid%>");
+    
+    
+    jQuery(".page").css({'height': (getDocHeight()-100) + 'px'});
+    
+    jQuery(window).resize(function() {
+       jQuery(".page").css({'height': (getDocHeight()-100) + 'px'});
+    });
+    
+    
+    
+    function procesar_mensaje(data) {
+      
+      switch(data.mensaje) {
+        
+        case "consumidor":
+           jQuery(".page").slideUp();
+           jQuery(".prestamista").show("slow");
+          
+           //CumploSocket.send("accion","formulario","pc",<%=@socketid%>);
+        break;
+        
+        case "prestamista":
+          jQuery(".page").slideUp();
+          jQuery(".consumidor").show("slow");
+         
+          //CumploSocket.send("accion","formulario","pc",<%=@socketid%>);
+        break;
+        
+        
+        case "contacto":
+         
+         
+        
+        break;
+        
+        
+        
+          
+      }
+      
+  }
+    
+    
+    
+   
+
+           jQuery.extend(jQuery.validator.messages, {
+                required: "Campo obligatorio",
+                remote: "Pro favor corrige este campo",
+                email: "Ingrese una direccion de email valida",
+                url: "Ingrese una url valida",
+                date: "Ingrese una fecha valida",
+                dateISO: "Ingrese una fecha valida (ISO)",
+                number: "Ingrese un numero",
+                digits: "Ingrese solo digitos",
+                creditcard: "Ingrese un numero de tarjeta valida",
+                equalTo: "Ingrese el mismo valor",
+                accept: "Ingrese una extension valida",
+                maxlength: jQuery.validator.format("No es posible ingresar mas de {0} catacteres"),
+                minlength: jQuery.validator.format("Ingrese al menos {0} caracteres"),
+                rangelength: jQuery.validator.format("Ingrese un valor con un minimo {0} y maximo {1} caracteres"),
+                range: jQuery.validator.format("Ingrese un valor entre {0} y {1}"),
+                max: jQuery.validator.format("Ingrese un valor menor o igual a {0}"),
+                min: jQuery.validator.format("Ingrese un valor mayor o igual a {0}")
+            });       
+
+
+
+
+
+     jQuery('#new_prospecto').validate({
+
+   	 highlight: function(element, errorClass) {
+           $(element).removeClass("valid").removeClass("warning").addClass("warning");
+         },
+         unhighlight: function(element, errorClass) {
+          $(element).addClass("valid").removeClass("warning");
+         },
+
+                errorClass: "warning",
+                debug:false,
+                onkeyup: true,
+                onblur: true,
+                ignore:':hidden'
+                
+        });  
+        
+        
+ jQuery("#gracias_container").css({"display":"none"});
+
+
+      $('#new_prospecto').submit(function(e) {
+        e.preventDefault();
+        
+        if($("#new_prospecto").valid()) {
+        
+          var dataString = { "prospecto" : {
+            
+            "nombre" : jQuery("#prospecto_nombre").val(),
+            "email" : jQuery("#prospecto_email").val(),
+            "edad" : jQuery("#prospecto_edad").val()
+          
+          } }
+          
+          console.log(dataString);
+          
+          jQuery.ajax({  
+            type: "POST",  
+            url: "/prospectos.json",  
+            data: dataString,  
+            success: function(data) {  
+              
+              console.log(data);
+              
+              jQuery("#name_txt").html(data.nombre)
+              jQuery("#fecha_txt").html(data.created_at)
+              
+              jQuery("#form_container").hide();
+              jQuery("#gracias_container").show("slow");
+              
+              
+            },
+            error: function(e) {
+              console.log("error "+e);
+            }
+          });  
+        }
+
+        
+        return false;
+      });
+
+
+
+
+
+    
+  });
+  
+  
+  
+  
+  
+  
+  function getDocHeight() {
+    var D = document;
+    return Math.max(
+        Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
+        Math.max(D.body.offsetHeight, D.documentElement.offsetHeight),
+        Math.max(D.body.clientHeight, D.documentElement.clientHeight)
+    );
+  }
+  
+  
+</script>
+
+
+
+<div class="page" id="page-1">
+  
+  
+
+  <div class="content_box">
+     <div id="qr">  
+     </div>
+  </div>
+
+</div>
+
+<div class="page consumidor" id="page-2">
+  <div class="content_box">
+    <h1> Consumidor </h2>
+    <p> lkdlfkjgldkjfgd </p>
+  </div>
+  
+</div>
+
+<div class="page prestamista" id="page-3">
+  <div class="content_box">
+    
+    <h1>En Cumplo existen nuevas alternativas de inversión para ti</h1>
+
+    <p>Hola, si buscas nuevas alternativas de inversión, conoce lo que Cumplo ofrece para inversionistas como tú.
+      En Cumplo puedes prestar tus fondos a personas reales, con necesidades reales y lo mejor de todo es que tú decides a quién le prestas y la tasa de interés mínima a la cual estás dispuesto a prestar tu dinero.
+      Rápido, simple y seguro. Únete hoy a Cumplo y sé parte de la primera comunidad de créditos persona-a-persona en Chile.
+    </p>
+    
+  </div>
+  
+</div>
+
+
+<div class="page contacto" id="page-4">
+  
+  <div class="content_box">
+    
+    <h1>Contacto</h1>
+
+    <div id="form_container">
+    
+       <%= form_for(@prospecto) do |f| %>
+                <% if @prospecto.errors.any? %>
+                  <div id="error_explanation">
+                    <h2><%= pluralize(@prospecto.errors.count, "error") %> prohibited this prospecto from being saved:</h2>
+
+                    <ul>
+                    <% @prospecto.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                    <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+
+                <div class="field">
+                  <%= f.label :nombre %><br />
+                  <%= f.text_field :nombre, :class => 'required' %>
+                </div>
+                <div class="field">
+                  <%= f.label :email %><br />
+                  <%= f.text_field :email, :class => 'required email' %>
+                </div>
+                <div class="field">
+                  <%= f.label :edad %><br />
+                  <%= f.text_field :edad, :class => 'required'%>
+                </div>
+                <div class="actions">
+                  <%= f.submit %>
+                </div>
+              <% end %>
+    
+    </div>
+    
+     <div id="gracias_container">
+       
+       Grcias <span id="name_txt"></span>, hemos guardado tu información con fecha <span id="fecha_txt"></span>,
+       Pronto te contactaremos.
+    
+     </div>
+       
+       
+  </div>
+  
+</div>
+
+
+
+
+<div class="debug">
+  <%=@socketid%>
+  <%=@app_url%>
+  <%=@socket_url%>
+</div>

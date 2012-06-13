@@ -1,0 +1,146 @@
+<script type="text/javascript">
+
+
+  
+jQuery(document).ready(
+function() {
+       
+   var CumploSocket = new Socketjs('<%=@socket_url%>?canal_id=<%=@channel_id%>');
+      
+      
+   jQuery("#prestamista_btn").click(function() {
+      
+      console.log(<%=@channel_id%>);
+     CumploSocket.send("accion","prestamista","movil",<%=@channel_id%>);
+     
+   });
+   
+   jQuery("#consumidor_btn").click(function() {
+     
+      console.log(<%=@channel_id%>); 
+      CumploSocket.send("accion","consumidor","movil",<%=@channel_id%>);
+     
+     
+   });
+   
+   
+   jQuery("#contacto_btn").click(function() {
+     CumploSocket.send("accion","contacto","movil",<%=@channel_id%>);
+   });
+   
+   
+    jQuery("#gracias_container").css({"display":"none"});
+    
+    
+   jQuery("#continuar_btn").click(function() {
+     CumploSocket.send("nombre",jQuery("#prospecto_nombre").val(),"movil",<%=@channel_id%>);
+     jQuery("#form_container").hide();
+     jQuery("#gracias_container").show();
+   });
+   
+   function procesar_mensaje(data) {
+      
+      switch(data.mensaje) {
+        
+        /*case "formulario":
+         
+            jQuery("#contacto_btn").show("slow");
+        break;*/
+        
+       
+      }
+      
+  }
+  
+   
+   
+    CumploSocket.bind( 'open', function (data) {
+      console.log("se ha abierto un canal "+data);
+    });
+    
+    CumploSocket.bind( 'mensaje', function (data) {
+       console.log("se ha enviado un mensaje "+data);
+       procesar_mensaje(data)
+    });
+    
+    CumploSocket.bind( 'close', function (data) {
+       console.log("se ha cerrado un canal "+data);
+    });
+    
+    CumploSocket.bind( 'silencio', function (data) {
+       console.log(data);
+    });
+    
+}
+);
+
+</script>
+
+<div data-role="page">
+
+	<div data-role="header">
+		<h1>Cumplo.cl</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		
+                <h1>Bienvenido a Cumplo.cl</h1>
+                
+                <p>Se ha suscrito al canal <%=@channel_id%></p>
+                
+                <p>Conozca los beneficios de Cumplo como prestamista o consumidor</p>
+                <p>Seleccione ver los beneficios para: </p>
+                
+                <a id="prestamista_btn" href="#" data-role="button" data-icon="star">Quiero Invertir</a>
+                <a id="consumidor_btn" href="#" data-role="button" data-icon="star">Quiero Pedir Prestado</a>
+                
+                <a id="contacto_btn"  href="#contacto" data-role="button" data-icon="star">Contacto</a>
+        
+        </div><!-- /content -->
+</div><!-- /page -->
+
+<div id="contacto" data-role="page">
+
+	<div data-role="header">
+		<h1>Cumplo.cl</h1>
+	</div><!-- /header -->
+
+	<div data-role="content">	
+		
+            <div id="form_container">
+              
+             <h1>Más Infomración!</h1>
+              <p> Ingresa tu nombre </p>
+              
+              
+             
+                <form accept-charset="UTF-8" action="" class="new_prospecto" id="new_prospecto" method="post">
+
+                  <div class="field">
+                    <label for="prospecto_nombre">Nombre</label><br />
+                    <input id="prospecto_nombre" name="prospecto[nombre]" size="30" type="text" />
+                  </div>
+
+                  <div class="actions">
+                    <input id="continuar_btn" name="continuar_btn" type="button" value="Continuar" />
+                  </div>
+             
+                </form>
+                
+              </div>
+          
+              <div id="gracias_container">
+                 <h1>Gracias <span id="nombre_contaner"></span></h1>
+                <p> Por favor completa el formulario en tu comptador </p>
+
+              </div>
+          
+          
+          
+          
+              </div>
+              
+              
+        
+        </div><!-- /content -->
+</div><!-- /page -->

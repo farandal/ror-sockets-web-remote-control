@@ -1,0 +1,81 @@
+/* 
+    Document   : general
+    Created on : 12-jun-2012, 22:28:14
+    Author     : farandal
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+body { 
+    
+    height:100%;
+    background: #78bf43;
+    font-family: Arial;
+    font-size: 12px;
+
+}
+
+h1 {color:#4a8b38; font-size: 16px; }
+
+.page {
+    
+    display:none;
+    margin: 0 auto 0 auto; width: 760px;
+    padding: 50px 0px;
+    
+    
+}
+
+.logo { width: 760px;  margin: 0 auto 0 auto; text-align: center; padding-top: 30px; }
+.logo img { margin: 0 auto 0 auto;  }
+
+.debug { display: none;}
+
+#page-1 { display:block;
+
+
+}
+
+
+
+
+.content_box {
+    
+    
+    
+    padding: 30px;
+    width:250px;
+    height:250px;
+   
+    
+    margin: 0 auto;
+    
+    -webkit-box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+    
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+
+    background-image: linear-gradient(bottom, rgb(245,245,245) 39%, rgb(235,232,235) 54%, rgb(247,247,247) 85%);
+    background-image: -o-linear-gradient(bottom, rgb(245,245,245) 39%, rgb(235,232,235) 54%, rgb(247,247,247) 85%);
+    background-image: -moz-linear-gradient(bottom, rgb(245,245,245) 39%, rgb(235,232,235) 54%, rgb(247,247,247) 85%);
+    background-image: -webkit-linear-gradient(bottom, rgb(245,245,245) 39%, rgb(235,232,235) 54%, rgb(247,247,247) 85%);
+    background-image: -ms-linear-gradient(bottom, rgb(245,245,245) 39%, rgb(235,232,235) 54%, rgb(247,247,247) 85%);
+
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.39, rgb(245,245,245)),
+            color-stop(0.54, rgb(235,232,235)),
+            color-stop(0.85, rgb(247,247,247))
+    );
+
+
+    
+}
